@@ -56,12 +56,14 @@ class Lyza:
 
         elif 'search' in command:
 
-            os.system('cls' if os.name == 'nt' else 'clear') # nt is for Windows, otherwise Linux or Mac
-            
+            word = ""
             command_words = command.split(' ')
             for i in range(len(command_words)):
                 if command_words[i] == 'search':
                     word = ("_").join(piece.capitalize() for piece in command_words[i+1:])
+
+            if word == "":
+                return
 
             url = "https://en.wikipedia.org/wiki/" + word
 
@@ -70,9 +72,17 @@ class Lyza:
             details = soup('table', {'class': 'infobox'})
 
             i = 1
-            j = 2
+            j = 3
+            
+            os.system('cls' if os.name == 'nt' else 'clear') # nt is for Windows, otherwise Linux or Mac
 
-            print(word + "\n")
+
+            word_to_print = []
+            for char in word:
+                if char != "_":
+                    word_to_print.append(char)
+
+            print(("").join(word_to_print) + "\n")
 
             while i < j:
                 
@@ -80,7 +90,9 @@ class Lyza:
 
                     i += 1
                     j += 1
+
                     continue
+
                 k = 0
                 buffer = []
                 content = soup('p')[i].text
@@ -97,7 +109,9 @@ class Lyza:
 
         elif 'trending' in command:
             
+            word = ""
             command_words = command.split(' ')
+            
             for i in range(len(command_words)):
                 if command_words[i] == 'search':
                     word = ("_").join(piece.capitalize() for piece in command_words[i+1:])
@@ -106,7 +120,6 @@ class Lyza:
                 return
 
             scraper = twint.Config()
-            scraper.Limit = 1
             scraper.Search = [word]       # topic
             scraper.Store_csv = True       # store tweets in a csv file
             scraper.Output = "dummy.csv"     # path to csv file
@@ -116,17 +129,18 @@ class Lyza:
 
             df = pd.read_csv('dummy.csv')
             tweets = dict(zip(df['username'], df['tweet']))
+            
 
             
             os.system('cls' if os.name == 'nt' else 'clear') # nt is for Windows, otherwise Linux or Mac
-
+            tweets_scrapped = 0
             print("TWEETS ON: " + word + "\n")
-            k = 0
+            
             for username in tweets:
 
                 print(username + ": " + tweets[username] + "\n")
-                k += 1
-                if k == 3:
+                tweets_scrapped += 1
+                if tweets_scrapped == 3:
                     break
 
             os.remove('dummy.csv')
