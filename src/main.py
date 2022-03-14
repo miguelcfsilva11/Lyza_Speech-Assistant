@@ -3,6 +3,10 @@ import os
 from bs4 import BeautifulSoup
 import speech_recognition as sr, pandas as pd
 import webbrowser, requests, twint, bs4
+from util import *
+
+os.system("color")
+
 
 class Lyza:
     
@@ -81,8 +85,12 @@ class Lyza:
             for char in word:
                 if char != "_":
                     word_to_print.append(char)
+                else:
+                    word_to_print.append(" ")
+            
 
-            print(("").join(word_to_print) + "\n")
+
+            print("\n" + paddings.BIG_PAD + colors.ORANGE + colors.BOLD + ("").join(word_to_print).upper() + colors.RESET + "\n")
 
             while i < j:
                 
@@ -98,8 +106,11 @@ class Lyza:
                 content = soup('p')[i].text
                 while k < (len(content)):
                     if content[k] == '[':
-                        k += 3 
+                        while content[k] != ']':
+                            k+=1
+                        k+=1 
                         continue
+
                     else:
                         buffer.append(content[k])
                         k += 1
@@ -113,16 +124,26 @@ class Lyza:
             command_words = command.split(' ')
             
             for i in range(len(command_words)):
-                if command_words[i] == 'search':
+                if command_words[i] == 'trending':
                     word = ("_").join(piece.capitalize() for piece in command_words[i+1:])
             
             if word == "":
                 return
 
+            word_to_print = []
+            for char in word:
+                if char != "_":
+                    word_to_print.append(char)
+                else:
+                    word_to_print.append(" ")
+            
+            word = ("").join(word_to_print)
+
             scraper = twint.Config()
             scraper.Search = [word]       # topic
             scraper.Store_csv = True       # store tweets in a csv file
-            scraper.Output = "dummy.csv"     # path to csv file
+            scraper.Output = "dummy.csv" 
+            scraper.Limit = 1
 
             twint.run.Search(scraper)
 
@@ -130,15 +151,14 @@ class Lyza:
             df = pd.read_csv('dummy.csv')
             tweets = dict(zip(df['username'], df['tweet']))
             
-
-            
             os.system('cls' if os.name == 'nt' else 'clear') # nt is for Windows, otherwise Linux or Mac
             tweets_scrapped = 0
-            print("TWEETS ON: " + word + "\n")
+            print("\n" + paddings.MID_PAD + "TWEETS ON: " + colors.ORANGE + colors.BOLD + word + colors.RESET + "\n")
             
             for username in tweets:
 
-                print(username + ": " + tweets[username] + "\n")
+                print(colors.BOLD + colors.BLUE + "@" + username + colors.RESET + ": " + tweets[username] + "\n")
+                
                 tweets_scrapped += 1
                 if tweets_scrapped == 3:
                     break
@@ -147,8 +167,8 @@ class Lyza:
             
 
 
+colors = colors()
 lyza = Lyza()
-    
 
 while True:
     command = lyza.record()
