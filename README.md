@@ -6,7 +6,7 @@ As of now, I am focused on developing the user's interface, so they can communic
 
 ## Voice Commands
 
-Before anything else, you need to activate Lyza's functions and awake it from its sleep! Simply say "Hi Lyza" to do so after you run the program.
+Before anything else, you need to **activate** Lyza's functions and awake it from its sleep! Simply say "*Hi Lyza*" to do so after you run the program.
 You can command Lyza to get Wikipedia's definition for a particular word by saying: "Search, *word*".
 
 <img src="image/lyza-wikipedia.png" width="560" height="248">
