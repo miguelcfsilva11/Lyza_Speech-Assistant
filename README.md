@@ -8,8 +8,10 @@ As of now, I am focused on developing the user's interface, so they can communic
 
 Before anything else, you need to activate Lyza's functions and awake it from its sleep! Simply say "Hi Lyza" to do so after you run the program.
 You can command Lyza to get Wikipedia's definition for a particular word by saying: "Search, *word*".
+
 <img src="image/lyza-wikipedia.png" width="560" height="248">
 
 You may also ask it to scrape the tweets that are trending related to a particular topic when proclaiming: "Trending, *topic*".
+
 <img src="image/lyza-twitter.png" width="560" height="248">
 
