@@ -71,7 +71,10 @@ class Lyza:
 
             url = "https://en.wikipedia.org/wiki/" + word
 
-            webpage = requests.get(url)
+            try:
+                webpage = requests.get(url)
+            except:
+                return;
             soup = BeautifulSoup(webpage.content, 'html.parser')
             details = soup('table', {'class': 'infobox'})
 
@@ -89,10 +92,13 @@ class Lyza:
                     word_to_print.append(" ")
             
 
+            if len(soup('p')) <= 1:
+                print("\n" + 'We could not find what you asked for. Please, try again!')
+                return
 
             print("\n" + paddings.BIG_PAD + colors.ORANGE + colors.BOLD + ("").join(word_to_print).upper() + colors.RESET + "\n")
-
-            while i < j:
+            
+            while i < j and i < len(soup('p')):
                 
                 if (len(soup('p')[i].text) == 1):
 
